@@ -1,26 +1,41 @@
-NAME = Libasm
+NAME = libasm.a
 NAME_TEST = Test
 NAME_TEST_BONUS = Test_Bonus
 
-SRCS = 
+SRCS_TEST = test/main.c \
+			test/test_strlen.c \
+			test/test_strcmp.c \
+
+SRCS = ft_strlen.s \
+		ft_strcmp.s \
+		#ft_strcpy.s \
+		ft_write.s \
+		ft_read.s \
+		ft_strdup.s
 SRCS_DIR = src
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(SRCS:.s=.o)
+OBJS_TEST = $(SRCS_TEST:.c=.o)
 OBJS_DIR = obj
 
-DIRS = obj
+DIRS = obj obj/test
 
+_SRCS_TEST = $(addprefix $(SRCS_DIR)/, $(SRCS_TEST))
 _SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS))
 _OBJS = $(addprefix $(OBJS_DIR)/, $(OBJS))
+_OBJS_TEST = $(addprefix $(OBJS_DIR)/, $(OBJS_TEST))
 
-HEADERS = includes
+HEADERS = inc
+
+LIBFT = libft.a
+LIBFT_DIR = libft
 
 MAKE = make --no-print-directory
 CC = gcc
 DEBUG_CFLAGS = -g -fsanitize=address
 
 NA			=	nasm
-NA_FLAGS	=	-f macho64
+NA_FLAGS	=
 
 UNAME = $(shell uname -s)
 
@@ -33,13 +48,15 @@ _OK			= [\033[32mOK\033[0m]
 _RM			= [\033[31mRM\033[0m]
 
 ifeq ($(UNAME), Linux)
-    CFLAGS = -I $(HEADERS) -Wall -Wextra -Werror 
-    LFLAGS = $(CFLAGS)
-    DEBUG_LFLAGS = -static-libasan
+    CFLAGS = -I $(HEADERS) -I $(LIBFT_DIR)/inc -Wall -Wextra -Werror 
+	NA_FLAGS = -f elf64
+    LFLAGS = $(CFLAGS) -L. -L $(LIBFT_DIR) -lasm -lft
+    DEBUG_LFLAGS = -static-libasan -g
 endif
 ifeq ($(UNAME), Darwin)
-	CFLAGS = -I $(HEADERS) -Wall -Wextra -Werror
-	LFLAGS = $(CFLAGS)
+	CFLAGS = -I $(HEADERS) -I $(LIBFT_DIR)/inc -Wall -Wextra -Werror
+	NA_FLAGS = -f macho64
+	LFLAGS = $(CFLAGS) -L. -lasm
 	DEBUG_LFLAGS = ""
 endif
 
@@ -51,38 +68,53 @@ fast: $(NAME)
 
 debug: LFLAGS += $(DEBUG_LFLAGS)
 debug: CFLAGS += $(DEBUG_CFLAGS)
-debug: $(NAME)
+debug: verbose
 
-$(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+$(NAME): $(_OBJS)
+	@ar rcs $(NAME) $(_OBJS)
 	@echo "$(_OK) $(NAME) \t\tcompiled"
 
-$(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
+$(OBJS_DIR)/%.o:$(SRCS_DIR)/%.s
 	@echo "[..] $(NAME)... compiling $*.c\r\c"
 	@mkdir -p $(DIRS)
-	$(NA) $(NA_FLAGS) $<
+	@$(NA) $(NA_FLAGS) $< -o $@
 	@echo "$(_CLEAR)"
 
-test:	$(NAME)
-	gcc $(FLAGS) -L. -lasm -o $(TEST) main.c
-	./$(TEST) < Makefile
+$(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
+	@echo "[..] $(NAME_TEST)... compiling $*.c\r\c"
+	@mkdir -p $(DIRS)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(_CLEAR)"
+
+$(LIBFT_DIR)/$(LIBFT):
+	@$(MAKE) -C $(LIBFT_DIR) all
+	@$(MAKE) -C $(LIBFT_DIR) bonus
+
+test: $(_OBJS_TEST) $(LIBFT_DIR)/$(LIBFT)	$(NAME)
+	@mkdir -p $(DIRS)
+	@gcc $(LFLAGS) -o $(NAME_TEST) $(_OBJS_TEST) -lasm -lft
+	@echo "$(_OK) $(NAME_TEST) \t\tcompiled"
+	@./$(NAME_TEST)
+
+verbose: $(_OBJS_TEST) $(LIBFT_DIR)/$(LIBFT) $(NAME)
+	@gcc $(LFLAGS) -o $(NAME_TEST) $(_OBJS_TEST) -lasm -lft
+	@echo "$(_OK) $(NAME_TEST) \t\tcompiled"
+	@./$(NAME_TEST) 1
 
 bonus:			$(OBJS) $(BONUS_OBJS)
-	ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
-
-test_bonus:		bonus
-	gcc $(FLAGS) -L. -lasm -o $(TEST_BONUS) main_bonus.c
-	./$(TEST_BONUS)
+	@ar rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 
 clean:
 	@echo "[..] $(NAME)... removing $*.c\r\c"
 	@rm -rf $(OBJS_DIR)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "$(_CLEAR)"
 
 fclean:
 	@rm -rf $(OBJS_DIR) $(NAME) $(NAME_TEST) $(NAME_TEST_BONUS)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "$(_RM) $(NAME) \t\tfull clean"
 
 re: fclean all
 
-.PHONY : all fast debug clean fclean re
+.PHONY : all fast debug clean test fclean re
