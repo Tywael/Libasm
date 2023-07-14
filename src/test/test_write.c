@@ -77,6 +77,7 @@ int write_bad_buf() {
 
 int all_write() {
     int ret = 0;
+    
     if (g_verbose)
         printf("Test ft_write:\n------------------------\n\n");
     ret += result_test(write_normal, "write normal");
