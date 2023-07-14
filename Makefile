@@ -5,12 +5,14 @@ NAME_TEST_BONUS = Test_Bonus
 SRCS_TEST = test/main.c \
 			test/test_strlen.c \
 			test/test_strcmp.c \
+			test/test_strcpy.c \
+			test/test_write.c
 
 SRCS = ft_strlen.s \
 		ft_strcmp.s \
-		#ft_strcpy.s \
+		ft_strcpy.s \
 		ft_write.s \
-		ft_read.s \
+		#ft_read.s \
 		ft_strdup.s
 SRCS_DIR = src
 
@@ -49,7 +51,7 @@ _RM			= [\033[31mRM\033[0m]
 
 ifeq ($(UNAME), Linux)
     CFLAGS = -I $(HEADERS) -I $(LIBFT_DIR)/inc -Wall -Wextra -Werror 
-	NA_FLAGS = -f elf64
+	NA_FLAGS = -felf64
     LFLAGS = $(CFLAGS) -L. -L $(LIBFT_DIR) -lasm -lft
     DEBUG_LFLAGS = -static-libasan -g
 endif

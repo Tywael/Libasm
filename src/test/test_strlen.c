@@ -67,11 +67,11 @@ int all_strlen() {
     int ret = 0;
     if (g_verbose)
         printf("Test ft_strlen:\n------------------------\n\n");
-    ret += result_test(strlen_normal);
-    ret += result_test(strlen_empty);
-    ret += result_test(strlen_null) == 11 ? 0 : 1;
-    ret += result_test(strlen_long);
-    ret += result_test(strlen_zero);
+    ret += result_test(strlen_normal, "strlen normal");
+    ret += result_test(strlen_empty, "strlen empty");
+    ret += result_test(strlen_null, "strlen Null") == 11 ? 0 : 1;
+    ret += result_test(strlen_long, "strlen long");
+    ret += result_test(strlen_zero, "strlen zero");
 
     return (ret);
 }

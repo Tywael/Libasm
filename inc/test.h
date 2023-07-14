@@ -36,10 +36,12 @@ enum e_result
 
 void signal_handler(int signum);
 int launch_test(test_func func);
-int result_test(test_func func);
+int result_test(test_func func, char *name);
 void print_signal(int signal);
 int all_strlen(void);
 int all_strcmp(void);
+int all_strcpy(void);
+int all_write(void);
 
 
 #endif

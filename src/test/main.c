@@ -30,15 +30,16 @@ void print_signal(int signal)
 		if (status == SIGILL)
             printf("This test exited with Illegal instruction [ILL]\n\n");
 	}
-    else
-        printf("Signal: %d\n", signal);
 }
 
-int result_test(test_func func)
+int result_test(test_func func, char *name)
 {
     int res = 0;
 
+    if (g_verbose)
+        printf("%s: \n", name);
     res = launch_test(func);
+
     if (res > 2 && g_verbose)
         print_signal(res);
     return (res);
@@ -82,5 +83,8 @@ int main(int argc, char **argv) {
     printf("verbose mode: \x1b[1m%s\x1b[0m\n\n", g_verbose ? "\x1b[32mON" : "\x1b[31mOFF");
     printf("====================\n\n");
     test("ft_strlen", all_strlen);
+    test("ft_strcmp", all_strcmp);
+    test("ft_strcpy", all_strcpy);
+    test("ft_write", all_write);
     return 0;
 }
