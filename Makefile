@@ -1,5 +1,5 @@
 NAME = libasm.a
-NAME_TEST = Test
+NAME_TEST = asm_tester
 NAME_TEST_BONUS = Test_Bonus
 
 SRCS_TEST = test/main.c \

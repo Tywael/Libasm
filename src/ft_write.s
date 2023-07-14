@@ -1,17 +1,19 @@
-section .text
+extern __errno_location
+
 global ft_write
-extern ___error
+section .text
 
 ft_write:
     mov rax, 1
     syscall
-    jc set_error
+    cmp rax, 0
+    jl error
     ret
 
 error:
     neg rax
     mov rdi, rax
-    call ___error
+    call  [rel __errno_location wrt ..got]
     mov [rax], rdi
     mov rax, -1
     ret
