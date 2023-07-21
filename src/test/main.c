@@ -86,5 +86,6 @@ int main(int argc, char **argv) {
     test("ft_strcmp", all_strcmp);
     test("ft_strcpy", all_strcpy);
     test("ft_write", all_write);
+    test("ft_read", all_read);
     return 0;
 }
