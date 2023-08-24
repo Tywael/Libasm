@@ -2,6 +2,7 @@
 #define LIBASM_H
 
 #include <stddef.h> // For size_t
+#include <stdlib.h>
 #include <sys/types.h> // For ssize_t
 
 // Function to calculate the length of a string

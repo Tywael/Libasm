@@ -8,13 +8,14 @@ SRCS_TEST = test/main.c \
 			test/test_strcpy.c \
 			test/test_write.c \
 			test/test_read.c \
+			test/test_strdup.c
 
 SRCS = ft_strlen.s \
 		ft_strcmp.s \
 		ft_strcpy.s \
 		ft_write.s \
 		ft_read.s \
-		#ft_strdup.s
+		ft_strdup.s
 SRCS_DIR = src
 
 OBJS = $(SRCS:.s=.o)

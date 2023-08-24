@@ -43,6 +43,7 @@ int all_strcmp(void);
 int all_strcpy(void);
 int all_write(void);
 int all_read(void);
+int all_strdup(void);
 
 
 #endif
