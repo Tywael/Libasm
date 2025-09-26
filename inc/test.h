@@ -38,6 +38,8 @@ void signal_handler(int signum);
 int launch_test(test_func func);
 int result_test(test_func func, char *name);
 void print_signal(int signal);
+int is_sigsegv(int status);
+int is_sigabrt(int status);
 int all_strlen(void);
 int all_strcmp(void);
 int all_strcpy(void);

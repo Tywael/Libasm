@@ -72,7 +72,7 @@ int all_strdup(void) {
         printf("Test ft_strdup:\n------------------------\n\n");
     ret += result_test(strdup_normal, "strdup normal");
     ret += result_test(strdup_empty, "strdup empty");
-    ret += result_test(strdup_null, "strdup null") == 11 ? 0 : 1;
+    ret += is_sigsegv(result_test(strdup_null, "strdup null")) ? 0 : 1;
     ret += result_test(strdup_long, "strdup long");
     return (ret);
 }

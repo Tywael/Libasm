@@ -32,6 +32,14 @@ void print_signal(int signal)
 	}
 }
 
+int is_sigsegv(int status) {
+    return (WIFSIGNALED(status) && WTERMSIG(status) == SIGSEGV);
+}
+
+int is_sigabrt(int status) {
+    return (WIFSIGNALED(status) && WTERMSIG(status) == SIGABRT);
+}
+
 int result_test(test_func func, char *name)
 {
     int res = 0;

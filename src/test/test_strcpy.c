@@ -107,11 +107,11 @@ int all_strcpy() {
     if (g_verbose)
         printf("Test ft_strcpy:\n------------------------\n\n");
     ret += result_test(strcpy_normal, "strcpy normal");
-    ret += result_test(strcpy_empty, "strcpy empty") == 11 ? 0 : 1;
-    ret += result_test(strcpy_null, "strcpy null") == 11 ? 0 : 1;
-    ret += result_test(strcpy_rnull, "strcpy rnull") == 11 ? 0 : 1;
+    ret += is_sigsegv(result_test(strcpy_empty, "strcpy empty")) ? 0 : 1;
+    ret += is_sigsegv(result_test(strcpy_null, "strcpy null")) ? 0 : 1;
+    ret += is_sigsegv(result_test(strcpy_rnull, "strcpy rnull")) ? 0 : 1;
     ret += result_test(strcpy_long, "strcpy long");
-    ret += result_test(strcpy_nospace, "strcpy nospace") == 11 ? 0 : 1;
+    ret += is_sigabrt(result_test(strcpy_nospace, "strcpy nospace")) ? 0 : 1;
     ret += result_test(strcpy_toospace, "strcpy toospace");
     ret += result_test(strcpy_flag, "strcpy flag");
     

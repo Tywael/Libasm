@@ -15,7 +15,6 @@ static int test_read(int fd, char *buf, char *buf2, size_t nbyte) {
 
     start = clock();
     ret = ft_read(fd, buf, nbyte);
-    printf("1: %s\n", buf);
     end = clock();
     time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 
@@ -23,7 +22,6 @@ static int test_read(int fd, char *buf, char *buf2, size_t nbyte) {
 
     start = clock();
     ret2 = read(fd, buf2, nbyte);
-    printf("2: %s\n",buf2);
     end = clock();
     time_spent2 = (double)(end - start) / CLOCKS_PER_SEC;
 

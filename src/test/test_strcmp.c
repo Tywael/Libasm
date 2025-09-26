@@ -91,7 +91,7 @@ int all_strcmp() {
         printf("Test ft_strcmp:\n------------------------\n\n");
     ret += result_test(strcmp_normal, "strcmp normal");
     ret += result_test(strcmp_empty, "strcmp empty");
-    ret += result_test(strcmp_null, "strcmp null") == 11 ? 0 : 1;
+    ret += is_sigsegv(result_test(strcmp_null, "strcmp null")) ? 0 : 1;
     ret += result_test(strcmp_long, "strcmp long");
     ret += result_test(strcmp_zero, "strcmp zero");
     ret += result_test(strcmp_zero2, "strcmp zero2");

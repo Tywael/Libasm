@@ -69,7 +69,7 @@ int all_strlen() {
         printf("Test ft_strlen:\n------------------------\n\n");
     ret += result_test(strlen_normal, "strlen normal");
     ret += result_test(strlen_empty, "strlen empty");
-    ret += result_test(strlen_null, "strlen Null") == 11 ? 0 : 1;
+    ret += is_sigsegv(result_test(strlen_null, "strlen Null")) ? 0 : 1;
     ret += result_test(strlen_long, "strlen long");
     ret += result_test(strlen_zero, "strlen zero");
 
