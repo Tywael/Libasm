@@ -52,13 +52,13 @@ _OK			= [\033[32mOK\033[0m]
 _RM			= [\033[31mRM\033[0m]
 
 ifeq ($(UNAME), Linux)
-    CFLAGS = -I $(HEADERS) -I $(LIBFT_DIR)/inc -Wall -Wextra -Werror 
-	NA_FLAGS = -felf64
+    CFLAGS = -I $(HEADERS) -I $(LIBFT_DIR)/inc -Wall -Wextra -Werror -fPIE -fPIC
+	NA_FLAGS = -felf64 -g
     LFLAGS = $(CFLAGS) -L. -L $(LIBFT_DIR) -lasm -lft
     DEBUG_LFLAGS = -static-libasan -g
 endif
 ifeq ($(UNAME), Darwin)
-	CFLAGS = -I $(HEADERS) -I $(LIBFT_DIR)/inc -Wall -Wextra -Werror
+	CFLAGS = -I $(HEADERS) -I $(LIBFT_DIR)/inc -Wall -Wextra -Werror -fPIE -fPIC
 	NA_FLAGS = -f macho64
 	LFLAGS = $(CFLAGS) -L. -lasm
 	DEBUG_LFLAGS = ""

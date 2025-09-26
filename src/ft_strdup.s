@@ -1,41 +1,40 @@
 global ft_strdup
+extern malloc
 section .text
 
 ft_strdup:
+    cmp rdi, 0
+    je _exit
     xor rcx, rcx
 
-strlen:
-    cmp byte [rdi], 0
-    je allocate
+_strlen:
+    cmp byte [rdi + rcx], 0
+    je _allocate
     inc rcx
-    inc rdi
-    jmp strlen
+    jmp _strlen
 
-allocate:
-    inc rcx
+_allocate:
     push rdi
     mov rdi, rcx
-    extern _malloc
-    call _malloc
+    inc rdi
+    call [rel malloc wrt ..got]
+    test rax, rax
+    je _exit
     pop rdi
     mov rsi, rax
-    cmp rsi, 0
-    je exit
+    xor rcx, rcx
+    xor rax, rax
 
-cpy:
-    mov al, [rdi]
-    mov [rsi], al
-    inc rsi
-    inc rdi
-    dec rcx
-    cmp rcx, 0
-    jne cpy
-    mov [rsi], byte 0
+_copy:
+    mov al, [rdi + rcx]
+    mov [rsi + rcx], al
+    inc rcx
+    cmp al, 0
+    jne _copy
+
     mov rax, rsi
     ret
 
-exit:
+_exit:
     xor rax, rax
     ret
-
-
